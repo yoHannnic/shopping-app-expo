@@ -12,14 +12,6 @@ const CheckoutScreen = ({ navigation }) => {
       Alert.alert("Cart is Empty", "You have no items to checkout.");
       return;
     }
-    if (cart.some(item => item.quantity <= 0)) {
-      Alert.alert("Invalid Quantity", "One or more items have an invalid quantity. Please update before proceeding.");
-      return;
-    }
-    if (cart.some(item => isNaN(item.price) || item.price <= 0)) {
-      Alert.alert("Invalid Price", "One or more items have an invalid price. Please check your cart.");
-      return;
-    }
     Alert.alert("Checkout successful", "Thank you for your purchase!", [
       { text: "OK", onPress: () => { clearCart(); navigation.navigate("Home"); } },
     ]);
@@ -35,8 +27,8 @@ const CheckoutScreen = ({ navigation }) => {
           keyExtractor={(item) => item.id.toString()}
           renderItem={({ item }) => (
             <View style={styles.cartItem}>
-              <Text style={styles.productText} numberOfLines={1} ellipsizeMode="tail">{item.name}</Text>
-              <Text style={styles.productPrice}>₱{item.price.toLocaleString()} x {item.quantity}</Text>
+              <Text style={styles.productText}>{item.name}</Text>
+              <Text style={styles.productPrice}>₱{item.price.toLocaleString()} x {item.quantity} = ₱{(item.price * item.quantity).toLocaleString()}</Text>
             </View>
           )}
         />
@@ -70,7 +62,6 @@ const styles = StyleSheet.create({
   productText: {
     fontSize: 16,
     fontWeight: "bold",
-    width: "80%",
   },
   productPrice: {
     fontSize: 14,
